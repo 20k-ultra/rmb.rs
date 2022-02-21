@@ -1,5 +1,6 @@
 # Remembe.rs
-> Command line tool to remember things
+
+A simple tool to help remind you of things such as links and todo items.
 
 Usage
 
