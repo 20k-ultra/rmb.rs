@@ -25,9 +25,9 @@ enum Commands {
     },
     /// Manage timers that display reminders at a later time
     Timer {
-        /// When to remind (Must provide what)
+        /// When to remind
         when: Option<String>,
-        /// What to remind (Must provide when)
+        /// What to remind
         what: Option<String>,
     },
 }
@@ -53,8 +53,8 @@ fn main() {
             (_, _) => {
                 Command::new("timer")
                     .about("Manage timers that display reminders at a later time")
-                    .arg(arg!(<WHEN> "The remote to clone"))
-                    .arg(arg!(<WHAT> "The remote to clone"))
+                    .arg(arg!(<WHEN> "When to remind"))
+                    .arg(arg!(<WHAT> "What to remind"))
                     .error(
                         ErrorKind::MissingRequiredArgument,
                         format!("Missing arguments for creating a timer"),
