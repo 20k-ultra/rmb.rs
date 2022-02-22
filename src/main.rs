@@ -1,6 +1,6 @@
-use clap::{arg, Command, ErrorKind, Parser, Subcommand};
+use clap::{Parser, Subcommand};
 
-use rmbrs;
+mod rmbrs;
 
 #[derive(Parser)]
 #[clap(about = "Command line tool that remembe.rs things", long_about = None)]
@@ -13,54 +13,41 @@ struct Cli {
 enum Commands {
     /// Print everything you wanted to remember
     List {},
-    /// Manage URLs to keep
+    /// Add a URL
     Link {
         /// Link to remember
-        link: Option<String>,
+        link: String,
     },
-    /// Manage items you want to do
+    /// List URLs
+    Links {},
+    /// Add a todo list item
     Todo {
         /// Todo item to remember
-        todo: Option<String>,
+        todo: String,
     },
-    /// Manage timers that display reminders at a later time
+    /// List Todo list items
+    Todos {},
+    /// Add a timer to remind you of something later
     Timer {
         /// When to remind
-        when: Option<String>,
+        when: String,
         /// What to remind
-        what: Option<String>,
+        what: String,
     },
+    /// List timers
+    Timers {},
 }
 
 fn main() {
     let args = Cli::parse();
 
     match &args.command {
-        Commands::List {} => {
-            rmbrs::print();
-        }
-        Commands::Link { link } => match link {
-            Some(l) => rmbrs::link::add(l),
-            None => rmbrs::link::print(),
-        },
-        Commands::Todo { todo } => match todo {
-            Some(t) => rmbrs::todo::add(t),
-            None => rmbrs::todo::print(),
-        },
-        Commands::Timer { when, what } => match (when, what) {
-            (Some(w1), Some(w2)) => rmbrs::timer::add(w1, w2),
-            (None, None) => rmbrs::timer::print(),
-            (_, _) => {
-                Command::new("timer")
-                    .about("Manage timers that display reminders at a later time")
-                    .arg(arg!(<WHEN> "When to remind"))
-                    .arg(arg!(<WHAT> "What to remind"))
-                    .error(
-                        ErrorKind::MissingRequiredArgument,
-                        format!("Missing arguments for creating a timer"),
-                    )
-                    .exit();
-            }
-        },
+        Commands::List {} => rmbrs::print(),
+        Commands::Link { link } => rmbrs::link::add(link),
+        Commands::Links {} => rmbrs::link::print(),
+        Commands::Todo { todo } => rmbrs::todo::add(todo),
+        Commands::Todos {} => rmbrs::todo::print(),
+        Commands::Timer { when, what } => rmbrs::timer::add(when, what),
+        Commands::Timers {} => rmbrs::timer::print(),
     }
 }

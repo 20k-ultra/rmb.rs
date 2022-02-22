@@ -1,4 +1,3 @@
-pub mod info;
 pub mod link;
 pub mod timer;
 pub mod todo;
