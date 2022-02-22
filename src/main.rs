@@ -1,5 +1,7 @@
 use clap::{Parser, Subcommand};
 
+use std::fs;
+
 mod rmbrs;
 
 #[derive(Parser)]
@@ -39,15 +41,37 @@ enum Commands {
 }
 
 fn main() {
+    // TODO allow specifying data store location
+    // TODO handle config file missing (this will panick on first run since the file won't exist)
+    // Read data store
+    let data = fs::read_to_string("rmbrs.json").unwrap();
+    // Parse CLI arguments provided
     let args = Cli::parse();
-
+    // Process command provided
     match &args.command {
-        Commands::List {} => rmbrs::print(),
-        Commands::Link { link } => rmbrs::link::add(link),
-        Commands::Links {} => rmbrs::link::print(),
-        Commands::Todo { todo } => rmbrs::todo::add(todo),
-        Commands::Todos {} => rmbrs::todo::print(),
-        Commands::Timer { when, what } => rmbrs::timer::add(when, what),
-        Commands::Timers {} => rmbrs::timer::print(),
+        Commands::List {} => rmbrs::print(&data),
+        Commands::Link { link } => rmbrs::link::add(
+            &rmbrs::link::Link {
+                url: link.to_string(),
+            },
+            &data,
+        ),
+        Commands::Links {} => rmbrs::link::print(&data),
+        Commands::Todo { todo } => rmbrs::todo::add(
+            &rmbrs::todo::Todo {
+                task: todo.to_string(),
+            },
+            &data,
+        ),
+        Commands::Todos {} => rmbrs::todo::print(&data),
+        Commands::Timer { when, what } => rmbrs::timer::add(
+            &rmbrs::timer::Timer {
+                when: when.to_string(),
+                what: what.to_string(),
+            },
+            &data,
+        ),
+        Commands::Timers {} => rmbrs::timer::print(&data),
     }
+    // TODO take result from add functions and save to file
 }
