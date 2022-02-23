@@ -43,8 +43,11 @@ enum Commands {
 fn main() {
     // TODO allow specifying data store location
     let data_path = "rmbrs.json";
-    // TODO handle config file missing (this will panick on first run since the file won't exist)
-    let data = fs::read_to_string(data_path).unwrap();
+    // Get existing data or return default CLI data
+    let data = match fs::read_to_string(data_path) {
+        Ok(d) => rmbrs::parse(&d).unwrap(), // TODO handle corrupt JSON better
+        Err(_) => default_data(),
+    };
     // Parse CLI arguments provided
     let args = Cli::parse();
     // Process command provided
@@ -56,7 +59,15 @@ fn main() {
     }
 }
 
-fn handle_cmd(cmd: &Commands, data: &String) -> Option<String> {
+fn default_data() -> rmbrs::Remembers {
+    rmbrs::Remembers {
+        links: vec![],
+        todos: vec![],
+        timers: vec![],
+    }
+}
+
+fn handle_cmd(cmd: &Commands, data: &rmbrs::Remembers) -> Option<String> {
     match cmd {
         Commands::Link { link } => Some(rmbrs::link::add(
             &rmbrs::link::Link {
