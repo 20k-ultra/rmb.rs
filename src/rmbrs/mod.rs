@@ -21,3 +21,11 @@ pub fn parse(data: &String) -> Result<Remembers> {
 pub fn print(data: &Remembers) {
     println!("Printing: {:?}", data)
 }
+
+pub fn empty() -> Remembers {
+    Remembers {
+        links: vec![],
+        todos: vec![],
+        timers: vec![],
+    } 
+}

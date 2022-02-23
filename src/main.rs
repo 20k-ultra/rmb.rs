@@ -46,7 +46,7 @@ fn main() {
     // Get existing data or return default CLI data
     let data = match fs::read_to_string(data_path) {
         Ok(d) => rmbrs::parse(&d).unwrap(), // TODO handle corrupt JSON better
-        Err(_) => default_data(),
+        Err(_) => rmbrs::empty(),
     };
     // Parse CLI arguments provided
     let args = Cli::parse();
@@ -56,14 +56,6 @@ fn main() {
     if modified_data.is_some() {
         // Persist edit
         fs::write(data_path, modified_data.unwrap()).expect("Unable to write file")
-    }
-}
-
-fn default_data() -> rmbrs::Remembers {
-    rmbrs::Remembers {
-        links: vec![],
-        todos: vec![],
-        timers: vec![],
     }
 }
 
