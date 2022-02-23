@@ -1,12 +1,12 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-struct TimerList {
+pub struct TimerList {
     timers: Vec<TimerMeta>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct TimerMeta {
+pub struct TimerMeta {
     timer: Timer,
     created: String,
 }
@@ -29,4 +29,8 @@ pub fn add(timer: &Timer, data: &super::Remembers) -> String {
 // TODO accept a writer to print to
 pub fn print(data: &super::Remembers) {
     println!("Timers: {:?}", data.timers)
+}
+
+pub fn empty() -> TimerList {
+    TimerList { timers: vec![] }
 }

@@ -7,9 +7,9 @@ pub mod todo;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Remembers {
-    pub links: Vec<link::Link>,
-    pub todos: Vec<todo::Todo>,
-    pub timers: Vec<timer::Timer>,
+    pub links: link::LinkList,
+    pub todos: todo::TodoList,
+    pub timers: timer::TimerList,
 }
 
 pub fn parse(data: &String) -> Result<Remembers> {
@@ -24,8 +24,8 @@ pub fn print(data: &Remembers) {
 
 pub fn empty() -> Remembers {
     Remembers {
-        links: vec![],
-        todos: vec![],
-        timers: vec![],
-    } 
+        links: link::empty(),
+        todos: todo::empty(),
+        timers: timer::empty(),
+    }
 }

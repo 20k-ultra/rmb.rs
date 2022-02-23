@@ -1,12 +1,12 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-struct TodoList {
+pub struct TodoList {
     todos: Vec<TodoMeta>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct TodoMeta {
+pub struct TodoMeta {
     task: Todo,
     created: String,
 }
@@ -25,4 +25,8 @@ pub fn add(todo: &Todo, data: &super::Remembers) -> String {
 // TODO accept a writer to print to
 pub fn print(data: &super::Remembers) {
     println!("Todos: {:?}", data.todos)
+}
+
+pub fn empty() -> TodoList {
+    TodoList { todos: vec![] }
 }
