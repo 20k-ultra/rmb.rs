@@ -28,11 +28,12 @@ fn parse(json: &str) -> Result<TimerList, Box<dyn Error>> {
 }
 
 // TODO parse, modify (add) then return new String
-pub fn add(timer: &Timer, data: &String) {
+pub fn add(timer: &Timer, data: &String) -> String {
     println!(
         "Adding a timer to {} at {} in {data}",
         timer.what, timer.when
-    )
+    );
+    "Adding timer".to_string()
 }
 
 // TODO accept a writer to print to

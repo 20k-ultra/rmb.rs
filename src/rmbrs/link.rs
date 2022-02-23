@@ -27,8 +27,9 @@ fn parse(json: &str) -> Result<LinkList, Box<dyn Error>> {
 }
 
 // TODO parse, modify (add) then return new String
-pub fn add(link: &Link, data: &String) {
-    println!("adding link: {:?} to data: {data}", link)
+pub fn add(link: &Link, data: &String) -> String {
+    println!("adding link: {:?} to data: {data}", link);
+    "New data".to_string()
 }
 
 // TODO accept a writer to print to

@@ -27,8 +27,9 @@ fn parse(json: &str) -> Result<TodoList, Box<dyn Error>> {
 }
 
 // TODO parse, modify (add) then return new String
-pub fn add(todo: &Todo, data: &String) {
-    println!("adding todo: {:?} to {data}", todo)
+pub fn add(todo: &Todo, data: &String) -> String {
+    println!("adding todo: {:?} to {data}", todo);
+    "Adding todo".to_string()
 }
 
 // TODO accept a writer to print to
