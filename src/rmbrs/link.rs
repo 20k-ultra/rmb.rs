@@ -2,18 +2,13 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LinkList {
-    links: Vec<LinkMeta>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct LinkMeta {
-    link: Link,
-    created: String,
+    links: Vec<Link>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Link {
     url: String,
+    created: String,
 }
 
 impl LinkList {
@@ -27,8 +22,8 @@ impl LinkList {
     }
 
     pub fn add<'a>(&'a mut self, url: String) -> &'a mut LinkList {
-        self.links.push(LinkMeta {
-            link: Link { url },
+        self.links.push(Link {
+            url,
             created: String::from("now"), // TODO make this a timestamp
         });
         self

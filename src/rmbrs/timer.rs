@@ -2,19 +2,14 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TimerList {
-    timers: Vec<TimerMeta>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct TimerMeta {
-    timer: Timer,
-    created: String,
+    timers: Vec<Timer>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Timer {
     what: String,
     when: String,
+    created: String,
 }
 
 impl TimerList {
@@ -28,8 +23,9 @@ impl TimerList {
     }
 
     pub fn add<'a>(&'a mut self, what: String, when: String) -> &'a mut TimerList {
-        self.timers.push(TimerMeta {
-            timer: Timer { what, when },
+        self.timers.push(Timer {
+            what,
+            when,
             created: String::from("now"), // TODO make this a timestamp
         });
         self
