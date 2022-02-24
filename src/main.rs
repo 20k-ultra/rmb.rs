@@ -63,20 +63,20 @@ fn handle_cmd(cmd: &Commands, data: &rmbrs::Remembers) -> Option<String> {
     match cmd {
         Commands::Link { link } => Some(rmbrs::link::add(
             &rmbrs::link::Link {
-                url: link.to_string(),
+                url: link.to_owned(),
             },
             &data,
         )),
         Commands::Todo { todo } => Some(rmbrs::todo::add(
             &rmbrs::todo::Todo {
-                task: todo.to_string(),
+                task: todo.to_owned(),
             },
             &data,
         )),
         Commands::Timer { when, what } => Some(rmbrs::timer::add(
             &rmbrs::timer::Timer {
-                when: when.to_string(),
-                what: what.to_string(),
+                when: when.to_owned(),
+                what: what.to_owned(),
             },
             &data,
         )),
