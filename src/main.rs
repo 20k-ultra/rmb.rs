@@ -60,31 +60,31 @@ fn main() {
 fn handle_cmd(cmd: &Commands, data: &mut rmbrs::Remembers) -> Option<()> {
     match cmd {
         Commands::Link { link } => {
-            data.links.push(rmbrs::Link::new(link.to_owned()));
+            data.links.push(link.to_owned());
             Some(())
         }
         Commands::Todo { todo } => {
-            data.todos.push(rmbrs::Todo::new(todo.to_owned()));
+            data.todos.push(todo.to_owned());
             Some(())
         }
         Commands::Timer { what, when } => {
-            data.timers.push(rmbrs::Timer::new(what.to_owned(), when.to_owned()));
+            data.timers.push(what.to_owned(), when.to_owned());
             Some(())
         }
         Commands::List {} => {
-            data.print();
+            println!("{}", data);
             None
         }
         Commands::Links {} => {
-            data.links.print();
+            println!("{}", data.links);
             None
         }
         Commands::Todos {} => {
-            data.todos.print();
+            println!("{}", data.todos);
             None
         }
         Commands::Timers {} => {
-            data.timers.print();
+            println!("{}", data.timers);
             None
         }
     }

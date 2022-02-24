@@ -1,38 +1,46 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Result as SerdeResult;
 
+use std::fmt;
+
 mod link;
-mod todo;
 mod timer;
+mod todo;
 
 pub use link::Link;
-pub use todo::Todo;
 pub use timer::Timer;
+pub use todo::Todo;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Remembers {
-    pub links: Vec<link::Link>,
-    pub todos: Vec<todo::Todo>,
-    pub timers: Vec<timer::Timer>,
+    pub links: link::LinkList,
+    pub todos: todo::TodoList,
+    pub timers: timer::TimerList,
 }
 
 impl Remembers {
     pub fn new() -> Remembers {
         Remembers {
-            links: vec![],
-            todos: vec![],
-            timers: vec![],
+            links: link::LinkList(vec![]),
+            todos: todo::TodoList(vec![]),
+            timers: timer::TimerList(vec![]),
         }
     }
 
     pub fn to_string(&self) -> String {
         serde_json::to_string(&self).unwrap()
     }
+}
 
-    pub fn print(&self) {
+impl fmt::Display for Remembers {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // TODO Make a minimal output format to use for printing
         // TODO pass a writer to each mod (link, timer, todo) so it can print
-        println!("Printing: {:?}", self);
+        write!(
+            f,
+            "Remembers -> \n   Links{}\n   Todos{}\n   Timers{}",
+            self.links, self.todos, self.timers
+        )
     }
 }
 
