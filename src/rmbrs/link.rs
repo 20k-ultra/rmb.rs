@@ -13,20 +13,24 @@ pub struct LinkMeta {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Link {
-    pub url: String,
+    url: String,
 }
 
-// TODO parse, modify (add) then return new String
-pub fn add(link: &Link, data: &super::Remembers) -> String {
-    println!("adding link: {:?} to data: {:?}", link, data);
-    "New data".to_string()
-}
+impl LinkList {
+    pub fn new() -> LinkList {
+        LinkList { links: vec![] }
+    }
 
-// TODO accept a writer to print to
-pub fn print(data: &super::Remembers) {
-    println!("Links: {:?}", data.links)
-}
+    // TODO accept a writer to print to
+    pub fn print(&self) {
+        println!("Links: {:?}", self.links)
+    }
 
-pub fn empty() -> LinkList {
-    LinkList { links: vec![] }
+    pub fn add<'a>(&'a mut self, url: String) -> &'a mut LinkList {
+        self.links.push(LinkMeta {
+            link: Link { url },
+            created: String::from("now"), // TODO make this a timestamp
+        });
+        self
+    }
 }

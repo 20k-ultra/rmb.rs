@@ -13,20 +13,24 @@ pub struct TodoMeta {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Todo {
-    pub task: String,
+    task: String,
 }
 
-// TODO parse, modify (add) then return new String
-pub fn add(todo: &Todo, data: &super::Remembers) -> String {
-    println!("adding todo: {:?} to {:?}", todo, data);
-    "Adding todo".to_string()
-}
+impl TodoList {
+    pub fn new() -> Self {
+        TodoList { todos: vec![] }
+    }
 
-// TODO accept a writer to print to
-pub fn print(data: &super::Remembers) {
-    println!("Todos: {:?}", data.todos)
-}
+    // TODO accept a writer to print to
+    pub fn print(&self) {
+        println!("Todos: {:?}", self.todos)
+    }
 
-pub fn empty() -> TodoList {
-    TodoList { todos: vec![] }
+    pub fn add<'a>(&'a mut self, task: String) -> &'a mut TodoList {
+        self.todos.push(TodoMeta {
+            task: Todo { task },
+            created: String::from("now"), // TODO make this a timestamp
+        });
+        self
+    }
 }

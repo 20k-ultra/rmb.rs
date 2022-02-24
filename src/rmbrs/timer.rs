@@ -13,24 +13,25 @@ pub struct TimerMeta {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Timer {
-    pub what: String,
-    pub when: String,
+    what: String,
+    when: String,
 }
 
-// TODO parse, modify (add) then return new String
-pub fn add(timer: &Timer, data: &super::Remembers) -> String {
-    println!(
-        "Adding a timer to {} at {} in {:?}",
-        timer.what, timer.when, data
-    );
-    "Adding timer".to_string()
-}
+impl TimerList {
+    pub fn new() -> Self {
+        TimerList { timers: vec![] }
+    }
 
-// TODO accept a writer to print to
-pub fn print(data: &super::Remembers) {
-    println!("Timers: {:?}", data.timers)
-}
+    // TODO accept a writer to print to
+    pub fn print(&self) {
+        println!("Timers: {:?}", self.timers)
+    }
 
-pub fn empty() -> TimerList {
-    TimerList { timers: vec![] }
+    pub fn add<'a>(&'a mut self, what: String, when: String) -> &'a mut TimerList {
+        self.timers.push(TimerMeta {
+            timer: Timer { what, when },
+            created: String::from("now"), // TODO make this a timestamp
+        });
+        self
+    }
 }

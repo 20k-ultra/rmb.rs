@@ -12,20 +12,26 @@ pub struct Remembers {
     pub timers: timer::TimerList,
 }
 
+impl Remembers {
+    pub fn new() -> Remembers {
+        Remembers {
+            links: link::LinkList::new(),
+            todos: todo::TodoList::new(),
+            timers: timer::TimerList::new(),
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        serde_json::to_string(&self).unwrap()
+    }
+
+    pub fn print(&self) {
+        // TODO Make a minimal output format to use for printing
+        // TODO pass a writer to each mod (link, timer, todo) so it can print
+        println!("Printing: {:?}", self);
+    }
+}
+
 pub fn parse(data: &String) -> Result<Remembers> {
     serde_json::from_str(data)
-}
-
-// TODO Make a minimal output format to use for printing
-// TODO pass a writer to each mod (link, timer, todo) so it can print
-pub fn print(data: &Remembers) {
-    println!("Printing: {:?}", data)
-}
-
-pub fn empty() -> Remembers {
-    Remembers {
-        links: link::empty(),
-        todos: todo::empty(),
-        timers: timer::empty(),
-    }
 }

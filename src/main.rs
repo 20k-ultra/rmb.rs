@@ -44,56 +44,47 @@ fn main() {
     // TODO allow specifying data store location
     let data_path = "rmbrs.json";
     // Get existing data or return default CLI data
-    let data = match fs::read_to_string(data_path) {
+    let mut remembered = match fs::read_to_string(data_path) {
         Ok(d) => rmbrs::parse(&d).unwrap(), // TODO handle corrupt JSON better
-        Err(_) => rmbrs::empty(),
+        Err(_) => rmbrs::Remembers::new(),
     };
     // Parse CLI arguments provided
     let args = Cli::parse();
-    // Process command provided
-    let modified_data = handle_cmd(&args.command, &data);
-    // Check if data was modified
-    if modified_data.is_some() {
-        // Persist edit
-        fs::write(data_path, modified_data.unwrap()).expect("Unable to write file")
+    // Check if something was changed
+    if handle_cmd(&args.command, &mut remembered).is_some() {
+        // Persist change
+        fs::write(data_path, remembered.to_string()).expect("Unable to write file")
     }
 }
 
-fn handle_cmd(cmd: &Commands, data: &rmbrs::Remembers) -> Option<String> {
+fn handle_cmd(cmd: &Commands, data: &mut rmbrs::Remembers) -> Option<()> {
     match cmd {
-        Commands::Link { link } => Some(rmbrs::link::add(
-            &rmbrs::link::Link {
-                url: link.to_owned(),
-            },
-            &data,
-        )),
-        Commands::Todo { todo } => Some(rmbrs::todo::add(
-            &rmbrs::todo::Todo {
-                task: todo.to_owned(),
-            },
-            &data,
-        )),
-        Commands::Timer { when, what } => Some(rmbrs::timer::add(
-            &rmbrs::timer::Timer {
-                when: when.to_owned(),
-                what: what.to_owned(),
-            },
-            &data,
-        )),
+        Commands::Link { link } => {
+            data.links.add(link.to_owned());
+            Some(())
+        }
+        Commands::Todo { todo } => {
+            data.todos.add(todo.to_owned());
+            Some(())
+        }
+        Commands::Timer { what, when } => {
+            data.timers.add(what.to_owned(), when.to_owned());
+            Some(())
+        }
         Commands::List {} => {
-            rmbrs::print(&data);
+            data.print();
             None
         }
         Commands::Links {} => {
-            rmbrs::link::print(&data);
+            data.links.print();
             None
         }
         Commands::Todos {} => {
-            rmbrs::todo::print(&data);
+            data.todos.print();
             None
         }
         Commands::Timers {} => {
-            rmbrs::timer::print(&data);
+            data.timers.print();
             None
         }
     }
