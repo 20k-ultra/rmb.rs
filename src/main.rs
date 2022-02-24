@@ -60,15 +60,15 @@ fn main() {
 fn handle_cmd(cmd: &Commands, data: &mut rmbrs::Remembers) -> Option<()> {
     match cmd {
         Commands::Link { link } => {
-            data.links.add(link.to_owned());
+            data.links.push(rmbrs::Link::new(link.to_owned()));
             Some(())
         }
         Commands::Todo { todo } => {
-            data.todos.add(todo.to_owned());
+            data.todos.push(rmbrs::Todo::new(todo.to_owned()));
             Some(())
         }
         Commands::Timer { what, when } => {
-            data.timers.add(what.to_owned(), when.to_owned());
+            data.timers.push(rmbrs::Timer::new(what.to_owned(), when.to_owned()));
             Some(())
         }
         Commands::List {} => {

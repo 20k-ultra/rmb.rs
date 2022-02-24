@@ -1,23 +1,27 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Result;
+use serde_json::Result as SerdeResult;
 
-pub mod link;
-pub mod timer;
-pub mod todo;
+mod link;
+mod todo;
+mod timer;
+
+pub use link::Link;
+pub use todo::Todo;
+pub use timer::Timer;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Remembers {
-    pub links: link::LinkList,
-    pub todos: todo::TodoList,
-    pub timers: timer::TimerList,
+    pub links: Vec<link::Link>,
+    pub todos: Vec<todo::Todo>,
+    pub timers: Vec<timer::Timer>,
 }
 
 impl Remembers {
     pub fn new() -> Remembers {
         Remembers {
-            links: link::LinkList::new(),
-            todos: todo::TodoList::new(),
-            timers: timer::TimerList::new(),
+            links: vec![],
+            todos: vec![],
+            timers: vec![],
         }
     }
 
@@ -32,6 +36,6 @@ impl Remembers {
     }
 }
 
-pub fn parse(data: &String) -> Result<Remembers> {
+pub fn parse(data: &String) -> SerdeResult<Remembers> {
     serde_json::from_str(data)
 }
