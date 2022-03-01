@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand};
 
 use std::fs;
+use std::str::FromStr;
 
 mod rmbrs;
 
@@ -60,7 +61,7 @@ fn main() {
     let data_path = "rmbrs.json";
     // Get existing data or return default CLI data
     let mut remembered = match fs::read_to_string(data_path) {
-        Ok(d) => rmbrs::parse(&d).expect("Remembered data is corrupt"),
+        Ok(d) => rmbrs::Remembers::from_str(&d).expect("Remembered data is corrupt"),
         Err(_) => rmbrs::Remembers::new(),
     };
     // Parse CLI arguments provided

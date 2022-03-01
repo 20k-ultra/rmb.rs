@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Result as SerdeResult;
+use serde_json::{Result, Error};
+
+use std::str::FromStr;
 
 mod link;
 mod timer;
@@ -33,6 +35,9 @@ impl ToString for Remembers {
     }
 }
 
-pub fn parse(data: &String) -> SerdeResult<Remembers> {
-    serde_json::from_str(data)
+impl FromStr for Remembers {
+    type Err = Error;
+    fn from_str(data: &str) -> Result<Remembers> {
+        serde_json::from_str(data)
+    }
 }
