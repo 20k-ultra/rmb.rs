@@ -60,7 +60,7 @@ fn main() {
     let data_path = "rmbrs.json";
     // Get existing data or return default CLI data
     let mut remembered = match fs::read_to_string(data_path) {
-        Ok(d) => rmbrs::parse(&d).unwrap(), // TODO handle corrupt JSON better
+        Ok(d) => rmbrs::parse(&d).expect("Remembered data is corrupt"),
         Err(_) => rmbrs::Remembers::new(),
     };
     // Parse CLI arguments provided
@@ -68,7 +68,7 @@ fn main() {
     // Check if something was changed
     if handle_cmd(&args.command, &mut remembered).is_some() {
         // Persist change
-        fs::write(data_path, remembered.to_string()).expect("Unable to write file")
+        fs::write(data_path, remembered.to_string().unwrap()).expect("Unable to write file")
     }
 }
 

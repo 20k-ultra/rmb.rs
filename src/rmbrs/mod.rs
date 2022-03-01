@@ -27,8 +27,8 @@ impl Remembers {
         }
     }
 
-    pub fn to_string(&self) -> String {
-        serde_json::to_string(&self).unwrap()
+    pub fn to_string(&self) -> SerdeResult<String> {
+        serde_json::to_string(&self)
     }
 }
 
