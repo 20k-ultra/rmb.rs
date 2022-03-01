@@ -66,59 +66,59 @@ fn main() {
     // Parse CLI arguments provided
     let args = Cli::parse();
     // Check if something was changed
-    if handle_cmd(&args.command, &mut remembered).is_some() {
+    if handle_cmd(&args.command, &mut remembered) {
         // Persist change
         fs::write(data_path, remembered.to_string().unwrap()).expect("Unable to write file")
     }
 }
 
-fn handle_cmd(cmd: &Commands, data: &mut rmbrs::Remembers) -> Option<()> {
+fn handle_cmd(cmd: &Commands, data: &mut rmbrs::Remembers) -> bool {
     match cmd {
         Commands::RmLink { index } => {
             data.links.remove(index.to_owned() - 1);
             println!("Removed Link {index}");
-            Some(())
+            true
         }
         Commands::Link { link } => {
             data.links.add(link.to_owned());
             println!("Added {link}");
-            Some(())
+            true
         }
         Commands::RmTodo { index } => {
             data.todos.remove(index.to_owned() - 1);
             println!("Removed Todo {index}");
-            Some(())
+            true
         }
         Commands::Todo { todo } => {
             data.todos.add(todo.to_owned());
             println!("Added {todo}");
-            Some(())
+            true
         }
         Commands::Timer { what, when } => {
             data.timers.add(what.to_owned(), when.to_owned());
             println!("Will remind you to {what} in {when}");
-            Some(())
+            true
         }
         Commands::RmTimer { index } => {
             data.timers.remove(index.to_owned() - 1);
             println!("Removed Timer {index}");
-            Some(())
+            true
         }
         Commands::List {} => {
             println!("{data}");
-            None
+            false
         }
         Commands::Links {} => {
             println!("{}", data.links);
-            None
+            false
         }
         Commands::Todos {} => {
             println!("{}", data.todos);
-            None
+            false
         }
         Commands::Timers {} => {
             println!("{}", data.timers);
-            None
+            false
         }
     }
 }
