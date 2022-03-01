@@ -14,7 +14,7 @@ impl Timer {
         Timer {
             what,
             when,
-            created: String::from("now"), // TODO make this a timestamp
+            created: chrono::Utc::now().to_rfc2822(),
         }
     }
 }
@@ -30,15 +30,33 @@ impl fmt::Display for Timer {
 pub struct TimerList(pub Vec<Timer>);
 
 impl TimerList {
-    pub fn push<'a>(&'a mut self, what: String, when: String) -> &'a mut TimerList {
+    pub fn add<'a>(&'a mut self, what: String, when: String) -> &'a mut TimerList {
         self.0.push(Timer::new(what, when));
+        self
+    }
+
+    pub fn remove<'a>(&'a mut self, index: usize) -> &'a mut TimerList {
+        self.0.remove(index);
         self
     }
 }
 
 impl fmt::Display for TimerList {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // TODO make this pretty
-        write!(f, "[{:?}]", self)
+        write!(
+            f,
+            "{}",
+            self.0
+                .iter()
+                .enumerate()
+                .fold(String::from(""), |accum, (index, timer)| {
+                    match accum.is_empty() {
+                        true => format!("[{}] {} in {}", index + 1, timer.what, timer.when),
+                        false => {
+                            format!("{accum}\n[{}] {} in {}", index + 1, timer.what, timer.when)
+                        }
+                    }
+                })
+        )
     }
 }

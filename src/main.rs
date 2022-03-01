@@ -15,6 +15,11 @@ struct Cli {
 enum Commands {
     /// Print everything you wanted to remember
     List {},
+    /// Remove a link
+    RmLink {
+        /// Link index to remove
+        index: usize,
+    },
     /// Add a URL
     Link {
         /// Link to remember
@@ -22,6 +27,11 @@ enum Commands {
     },
     /// List URLs
     Links {},
+    /// Remove a todo
+    RmTodo {
+        /// Todo index to remove
+        index: usize,
+    },
     /// Add a todo list item
     Todo {
         /// Todo item to remember
@@ -29,12 +39,17 @@ enum Commands {
     },
     /// List Todo list items
     Todos {},
+    /// Remove a timer
+    RmTimer {
+        /// Timer index to remove
+        index: usize,
+    },
     /// Add a timer to remind you of something later
     Timer {
-        /// When to remind
-        when: String,
         /// What to remind
         what: String,
+        /// When to remind
+        when: String,
     },
     /// List timers
     Timers {},
@@ -59,20 +74,38 @@ fn main() {
 
 fn handle_cmd(cmd: &Commands, data: &mut rmbrs::Remembers) -> Option<()> {
     match cmd {
+        Commands::RmLink { index } => {
+            data.links.remove(index.to_owned() - 1);
+            println!("Removed Link {index}");
+            Some(())
+        }
         Commands::Link { link } => {
-            data.links.push(link.to_owned());
+            data.links.add(link.to_owned());
+            println!("Added {link}");
+            Some(())
+        }
+        Commands::RmTodo { index } => {
+            data.todos.remove(index.to_owned() - 1);
+            println!("Removed Todo {index}");
             Some(())
         }
         Commands::Todo { todo } => {
-            data.todos.push(todo.to_owned());
+            data.todos.add(todo.to_owned());
+            println!("Added {todo}");
             Some(())
         }
         Commands::Timer { what, when } => {
-            data.timers.push(what.to_owned(), when.to_owned());
+            data.timers.add(what.to_owned(), when.to_owned());
+            println!("Will remind you to {what} in {when}");
+            Some(())
+        }
+        Commands::RmTimer { index } => {
+            data.timers.remove(index.to_owned() - 1);
+            println!("Removed Timer {index}");
             Some(())
         }
         Commands::List {} => {
-            println!("{}", data);
+            println!("{data}");
             None
         }
         Commands::Links {} => {

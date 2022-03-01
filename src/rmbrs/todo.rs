@@ -12,7 +12,7 @@ impl Todo {
     pub fn new(task: String) -> Todo {
         Todo {
             task,
-            created: String::from("now"), // TODO make this a timestamp
+            created: chrono::Utc::now().to_rfc2822(),
         }
     }
 }
@@ -20,7 +20,7 @@ impl Todo {
 impl fmt::Display for Todo {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // TODO figure out how to print this..
-        write!(f, "[{} Todo]", self)
+        write!(f, "{}", self.task)
     }
 }
 
@@ -28,15 +28,31 @@ impl fmt::Display for Todo {
 pub struct TodoList(pub Vec<Todo>);
 
 impl TodoList {
-    pub fn push<'a>(&'a mut self, task: String) -> &'a mut TodoList {
+    pub fn add<'a>(&'a mut self, task: String) -> &'a mut TodoList {
         self.0.push(Todo::new(task));
+        self
+    }
+
+    pub fn remove<'a>(&'a mut self, index: usize) -> &'a mut TodoList {
+        self.0.remove(index);
         self
     }
 }
 
 impl fmt::Display for TodoList {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // TODO make this pretty
-        write!(f, "[{:?}]", self)
+        write!(
+            f,
+            "{}",
+            self.0
+                .iter()
+                .enumerate()
+                .fold(String::from(""), |accum, (index, todo)| {
+                    match accum.is_empty() {
+                        true => format!("[{}] {}", index + 1, todo.task),
+                        false => format!("{accum}\n[{}] {}", index + 1, todo.task),
+                    }
+                })
+        )
     }
 }

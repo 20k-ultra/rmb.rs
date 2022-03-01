@@ -34,11 +34,9 @@ impl Remembers {
 
 impl fmt::Display for Remembers {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // TODO Make a minimal output format to use for printing
-        // TODO pass a writer to each mod (link, timer, todo) so it can print
         write!(
             f,
-            "Remembers -> \n   Links{}\n   Todos{}\n   Timers{}",
+            "Remembers\n   Links\n{}\n   Todos\n{}\n   Timers\n{}",
             self.links, self.todos, self.timers
         )
     }
