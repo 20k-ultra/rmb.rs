@@ -27,12 +27,12 @@ impl ToString for Link {
 pub struct LinkList(pub Vec<Link>);
 
 impl LinkList {
-    pub fn add<'a>(&'a mut self, url: String) -> &'a mut LinkList {
+    pub fn add(&mut self, url: String) -> &mut LinkList {
         self.0.push(Link::new(url));
         self
     }
 
-    pub fn remove<'a>(&'a mut self, index: usize) -> &'a mut LinkList {
+    pub fn remove(&mut self, index: usize) -> &mut LinkList {
         self.0.remove(index);
         self
     }

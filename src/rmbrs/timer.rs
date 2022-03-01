@@ -29,12 +29,12 @@ impl ToString for Timer {
 pub struct TimerList(pub Vec<Timer>);
 
 impl TimerList {
-    pub fn add<'a>(&'a mut self, what: String, when: String) -> &'a mut TimerList {
+    pub fn add(&mut self, what: String, when: String) -> &mut TimerList {
         self.0.push(Timer::new(what, when));
         self
     }
 
-    pub fn remove<'a>(&'a mut self, index: usize) -> &'a mut TimerList {
+    pub fn remove(&mut self, index: usize) -> &mut TimerList {
         self.0.remove(index);
         self
     }

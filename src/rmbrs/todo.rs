@@ -27,12 +27,12 @@ impl ToString for Todo {
 pub struct TodoList(pub Vec<Todo>);
 
 impl TodoList {
-    pub fn add<'a>(&'a mut self, task: String) -> &'a mut TodoList {
+    pub fn add(&mut self, task: String) -> &mut TodoList {
         self.0.push(Todo::new(task));
         self
     }
 
-    pub fn remove<'a>(&'a mut self, index: usize) -> &'a mut TodoList {
+    pub fn remove(&mut self, index: usize) -> &mut TodoList {
         self.0.remove(index);
         self
     }
