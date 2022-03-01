@@ -68,7 +68,7 @@ fn main() {
     // Check if something was changed
     if handle_cmd(args.command, &mut remembered) {
         // Persist change
-        fs::write(data_path, remembered.to_string().unwrap()).expect("Unable to write file")
+        fs::write(data_path, remembered.to_string()).expect("Unable to write file")
     }
 }
 
@@ -105,7 +105,10 @@ fn handle_cmd(cmd: Commands, data: &mut rmbrs::Remembers) -> bool {
             true
         }
         Commands::List {} => {
-            println!("{data}");
+            println!(
+                "Remembers\n   Links\n{}\n   Todos\n{}\n   Timers\n{}",
+                data.links, data.todos, data.timers
+            );
             false
         }
         Commands::Links {} => {

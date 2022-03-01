@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Result as SerdeResult;
 
-use std::fmt;
-
 mod link;
 mod timer;
 mod todo;
@@ -27,18 +25,11 @@ impl Remembers {
         }
     }
 
-    pub fn to_string(&self) -> SerdeResult<String> {
-        serde_json::to_string(&self)
-    }
 }
 
-impl fmt::Display for Remembers {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "Remembers\n   Links\n{}\n   Todos\n{}\n   Timers\n{}",
-            self.links, self.todos, self.timers
-        )
+impl ToString for Remembers {
+    fn to_string(&self) -> String {
+        serde_json::to_string(&self).unwrap()
     }
 }
 

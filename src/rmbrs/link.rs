@@ -17,10 +17,9 @@ impl Link {
     }
 }
 
-impl fmt::Display for Link {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // TODO figure out how to print this..
-        write!(f, "[{} Link]", self)
+impl ToString for Link {
+    fn to_string(&self) -> String {
+        serde_json::to_string(&self).unwrap()
     }
 }
 

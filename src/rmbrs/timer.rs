@@ -4,8 +4,8 @@ use std::fmt;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Timer {
-    what: String,
-    when: String,
+    pub what: String,
+    pub when: String,
     created: String,
 }
 
@@ -19,10 +19,9 @@ impl Timer {
     }
 }
 
-impl fmt::Display for Timer {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // TODO figure out how to print this..
-        write!(f, "[{} Timer]", self)
+impl ToString for Timer {
+    fn to_string(&self) -> String {
+        serde_json::to_string(&self).unwrap()
     }
 }
 

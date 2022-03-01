@@ -4,7 +4,7 @@ use std::fmt;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Todo {
-    task: String,
+    pub task: String,
     created: String,
 }
 
@@ -17,10 +17,9 @@ impl Todo {
     }
 }
 
-impl fmt::Display for Todo {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        // TODO figure out how to print this..
-        write!(f, "{}", self.task)
+impl ToString for Todo {
+    fn to_string(&self) -> String {
+        serde_json::to_string(&self).unwrap()
     }
 }
 
