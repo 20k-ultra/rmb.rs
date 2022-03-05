@@ -58,9 +58,12 @@ enum Commands {
 
 fn main() {
     // TODO allow specifying data store location
-    let data_path = "rmbrs.json";
+    let data_path = match home::home_dir() {
+        Some(path) => format!("{}/.rmbrs.json", path.display()), 
+        None => exit_msg("Unable to look up HOME directory", exitcode::CONFIG), 
+    };
     // Get existing data or return default CLI data
-    let mut remembered = match fs::read_to_string(data_path) {
+    let mut remembered = match fs::read_to_string(&data_path) {
         Ok(d) => rmbrs::Remembers::from_str(&d).expect("Remembered data is corrupt"),
         Err(_) => rmbrs::Remembers::new(),
     };
@@ -71,6 +74,11 @@ fn main() {
         // Persist change
         fs::write(data_path, remembered.to_string()).expect("Unable to write file")
     }
+}
+
+fn exit_msg(message: &str, code: i32) -> ! {
+    println!("{message}");
+    std::process::exit(code);
 }
 
 fn handle_cmd(cmd: Commands, data: &mut rmbrs::Remembers) -> bool {
