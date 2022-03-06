@@ -3,6 +3,7 @@ use clap::{Command, Arg};
 use std::str::FromStr;
 
 pub enum SubCommand {
+    Print,
     Todos,
     Links,
     Timers
@@ -12,6 +13,7 @@ impl FromStr for SubCommand {
     type Err = ();
     fn from_str(input: &str) -> Result<SubCommand, Self::Err> {
         match input {
+            "print"  => Ok(SubCommand::Print),
             "todos"  => Ok(SubCommand::Todos),
             "links"  => Ok(SubCommand::Links),
             "timers" => Ok(SubCommand::Timers),
@@ -23,6 +25,9 @@ impl FromStr for SubCommand {
 pub fn build_cli() -> Command<'static> {
     Command::new("rmbrs")
         .about("Closest thing to scribbling stuff on a sticky note")
+        .subcommand_required(true)
+        .subcommand(Command::new("print")
+            .about("Print everything remembered"))
         .subcommand(Command::new("todos")
             .about("Things to do")
             .subcommand(Command::new("add")

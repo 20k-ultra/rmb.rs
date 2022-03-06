@@ -18,7 +18,15 @@ fn main() {
         Err(_) => rmbrs::Remembers::new(),
     };
     // Parse CLI arguments provided
-    let cmd = cli::build_cli().get_matches();
+    let matches = cli::build_cli().get_matches();
+    let cmd = match matches.subcommand() {
+        Some(sub) => {
+            (cli::SubCommand::from_str(sub.0).unwrap(), sub.1)
+        },
+        None => {
+            unreachable!("Exhausted list of subcommands and subcommand_required prevents `None`");
+        }
+    };
     // Check if something was changed
     if handle_cmd(cmd, &mut remembered) {
         // Persist change
@@ -26,28 +34,22 @@ fn main() {
     }
 }
 
+// TODO use clap lib Error
 fn exit_msg(message: &str, code: i32) -> ! {
     println!("{message}");
     std::process::exit(code);
 }
 
-fn handle_cmd(cmd: ArgMatches, data: &mut rmbrs::Remembers) -> bool {
-    match cmd.subcommand() {
-        Some(sub_cmd) => {
-            handle_sub(&cli::SubCommand::from_str(sub_cmd.0).unwrap(), sub_cmd.1, data)
-        },
-        None => {
+fn handle_cmd((cmd, args): (cli::SubCommand, &ArgMatches), data: &mut rmbrs::Remembers) -> bool {
+    match (cmd, args.subcommand()) {
+        (cli::SubCommand::Print, _) => {
+            // TODO make this prettier like a table with colours...
             println!(
                 "Remembers\n   Links\n{}\n   Todos\n{}\n   Timers\n{}",
                 data.links, data.todos, data.timers
             );
             false
-        } 
-    }
-}
-
-fn handle_sub(cmd: &cli::SubCommand, args: &ArgMatches, data: &mut rmbrs::Remembers) -> bool {
-    match (cmd, args.subcommand()) {
+        }
         (cli::SubCommand::Links, sub_cmd) => {
             match sub_cmd {
                 Some(more_sub_cmd) => {
