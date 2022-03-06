@@ -1,6 +1,6 @@
 # rmb.rs
 
-Command line tool that remembers things for you
+The closest thing to just scribbling something down on a sticky note 
 
 Usage
 
