@@ -36,7 +36,7 @@ fn main() {
 
 // TODO use clap lib Error
 fn exit_msg(message: &str, code: i32) -> ! {
-    println!("{message}");
+    eprintln!("{message}");
     std::process::exit(code);
 }
 
