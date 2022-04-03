@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use serde_json::{Result, Error};
+use serde_json::{Error, Result};
 
 use std::str::FromStr;
 
@@ -26,7 +26,6 @@ impl Remembers {
             timers: timer::TimerList(vec![]),
         }
     }
-
 }
 
 impl ToString for Remembers {

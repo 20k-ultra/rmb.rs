@@ -12,8 +12,7 @@ fn main() -> Result<(), Error> {
 
     let mut cmd = build_cli();
     let path = generate_to(
-        Zsh,
-        &mut cmd, // We need to specify what generator to use
+        Zsh, &mut cmd, // We need to specify what generator to use
         "rmbrs",  // We need to specify the bin name manually
         outdir,   // We need to specify where to write to
     )?;
