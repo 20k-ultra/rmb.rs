@@ -2,29 +2,32 @@
 
 Closest thing to scribbling stuff on a sticky note 
 
-Usage
+### Usage
 
 ```
-# List links
-rmbrs links 
-# Add a link
-rmbrs links add https://aws.amazon.com/premiumsupport/knowledge-center/rds-mysql-high-replica-lag/
-# Remove a link (index of link in list of links)
-rmbrs links rm 1 
-
-# List todo items
-rmbrs todos
-# Add a todo item
-rmbrs todos add "review https://github.com/balena-os/balena-supervisor/pull/1805"
-# Remove a todo (index of todo in list of todos)
-rmbrs todos rm 1 
-
-# List previously created timers 
-rmbrs timers 
-# Create a timer that tells you something in 5 days
-rmbrs timers add "roll out new cluster settings" 5d
-# Create a timer with a timestamp
-rmbrs timers add "wish team merry christmas" 25/12/2021 
-# Remove a timer (index of todo in list of timers)
-rmbrs timers rm 1 
+~$ rmbrs todos add "finish bandwidth profiles feature"
+Added todo
+~$ rmbrs todos
+[1] work on snowplow
+[2] make something in rust
+[3] add sentry to the Supervisor
+[4] finish bandwidth profiles feature
+~$ rmbrs todos rm 2 
+Removed todo
+~$ rmbrs todos
+[1] work on snowplow
+[2] add sentry to the Supervisor
+[3] finish bandwidth profiles feature
 ```
+
+### Features
+  - [x] Remember todos and links
+ 
+### Goals
+  - [ ] Timed todos
+    - [ ] Use system notification to notify of a todo 
+  - [ ] Ask if you still want to remember a todo/link after X time
+
+### Tricks
+
+I like using this tool by calling the todos in my [zshrc](https://github.com/20k-ultra/dotfiles/blob/b4e3c9219b21c97f0771fa55fc562900cfef9726/zsh/zshrc.symlink#L36). This provides a constant reminder of what I wanted todo without having to ask/check manually.
